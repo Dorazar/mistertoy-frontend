@@ -1,17 +1,17 @@
-import { carService } from "../../services/car.service.js";
+import { toyService } from "../../services/toy.service-local.js";
 import { showSuccessMsg } from "../../services/event-bus.service.js";
-import { ADD_CAR, CAR_UNDO, REMOVE_CAR, SET_CARS, SET_FILTER_BY, SET_IS_LOADING, UPDATE_CAR } from "../reducers/car.reducer.js";
+import { ADD_TOY, TOY_UNDO, REMOVE_TOY, SET_TOYS, SET_FILTER_BY, SET_IS_LOADING, UPDATE_TOY } from "../reducers/toy.reducer.js";
 import { store } from "../store.js";
 
-export function loadCars() {
-    const filterBy = store.getState().carModule.filterBy
+export function loadToys() {
+    const filterBy = store.getState().toyModule.filterBy
     store.dispatch({ type: SET_IS_LOADING, isLoading: true })
-    return carService.query(filterBy)
-        .then(cars => {
-            store.dispatch({ type: SET_CARS, cars })
+    return toyService.query(filterBy)
+        .then(toys => {
+            store.dispatch({ type: SET_TOYS, toys })
         })
         .catch(err => {
-            console.log('car action -> Cannot load cars', err)
+            console.log('toy action -> Cannot load toys', err)
             throw err
         })
         .finally(() => {
@@ -19,40 +19,40 @@ export function loadCars() {
         })
 }
 
-export function removeCar(carId) {
-    return carService.remove(carId)
+export function removeToy(toyId) {
+    return toyService.remove(toyId)
         .then(() => {
-            store.dispatch({ type: REMOVE_CAR, carId })
+            store.dispatch({ type: REMOVE_TOY, toyId })
         })
         .catch(err => {
-            console.log('car action -> Cannot remove car', err)
+            console.log('toy action -> Cannot remove toy', err)
             throw err
         })
 }
 
-export function removeCarOptimistic(carId) {
-    store.dispatch({ type: REMOVE_CAR, carId })
-    return carService.remove(carId)
+export function removeToyOptimistic(toyId) {
+    store.dispatch({ type: REMOVE_TOY, toyId })
+    return toyService.remove(toyId)
         .then(() => {
-            showSuccessMsg('Removed Car!')
+            showSuccessMsg('Removed Toy!')
         })
         .catch(err => {
-            store.dispatch({ type: CAR_UNDO })
-            console.log('car action -> Cannot remove car', err)
+            store.dispatch({ type: TOY_UNDO })
+            console.log('toy action -> Cannot remove toy', err)
             throw err
         })
 }
 
-export function saveCar(car) {
-    const type = car._id ? UPDATE_CAR : ADD_CAR
-    return carService.save(car)
-        .then(savedCar => {
-            console.log('savedCar:', savedCar)
-            store.dispatch({ type, car: savedCar })
-            return savedCar
+export function saveToy(toy) {
+    const type = toy._id ? UPDATE_TOY : ADD_TOY
+    return toyService.save(toy)
+        .then(savedToy => {
+            console.log('savedToy:', savedToy)
+            store.dispatch({ type, toy: savedToy })
+            return savedToy
         })
         .catch(err => {
-            console.log('car action -> Cannot save car', err)
+            console.log('toy action -> Cannot save toy', err)
             throw err
         })
 }
