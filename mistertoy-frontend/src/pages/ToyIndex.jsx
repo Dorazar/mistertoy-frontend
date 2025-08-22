@@ -33,7 +33,6 @@ export function ToyIndex() {
     }
 
     function onRemoveToy(toyId) {
-        console.log()
         removeToy(toyId)
             .then(() => {
                 showSuccessMsg('Toy removed')
@@ -67,17 +66,16 @@ export function ToyIndex() {
             })
     }
 
-    function addTotoyt(toy) {
-        console.log(`Adding ${toy.vendor} to toyt`)
-        dispatch({ type: ADD_TOY_TO_CART, toy })
-        showSuccessMsg('Added to toyt')
-    }
+    // function addToCart(toy) {
+    //     dispatch({ type: ADD_TOY_TO_CART, toy })
+    //     showSuccessMsg('Added to CART')
+    // }
 
     return (
         <div>
             <h3>toys App</h3>
             <main>
-                <Link to="/toy/edit">Add Toy</Link>
+                <button><Link to="/toy/edit">Add Toy</Link></button>
                 {/* <button className='add-btn' onClick={onAddtoy}>Add Random Toy ⛐</button> */}
                 <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
                 {!isLoading
@@ -85,7 +83,7 @@ export function ToyIndex() {
                         toys={toys}
                         onRemoveToy={onRemoveToy}
                         onEditToy={onEditToy}
-                        addTotoyt={addTotoyt}
+                        // addTotoyt={addToCart}
                     />
                     : <div>Loading...</div>
                 }

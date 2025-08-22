@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
-import { toyService } from "../services/toy.service.js"
+import { toyService } from "../services/toy.service-local.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { saveToy } from "../store/actions/toy.actions.js"
 import { Link, useNavigate, useParams } from "react-router-dom"
 // import { useOnlineStatus } from "../hooks/useOnlineStatusSyncStore.js"
-import { useOnlineStatus } from "../hooks/useOnlineStatus.js"
-import { useConfirmTabClose } from "../hooks/useConfirmTabClose.js"
+// import { useOnlineStatus } from "../hooks/useOnlineStatus.js"
+// import { useConfirmTabClose } from "../hooks/useConfirmTabClose.js"
 
 
 export function ToyEdit() {
@@ -13,15 +13,15 @@ export function ToyEdit() {
     const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
     const { toyId } = useParams()
 
-    const isOnline = useOnlineStatus()
-    const setHasUnsavedChanges = useConfirmTabClose()
+    // const isOnline = useOnlineStatus()
+    // const setHasUnsavedChanges = useConfirmTabClose()
 
     useEffect(() => {
         if (toyId) loadToy()
     }, [])
 
     function loadToy() {
-        toyService.getById(toyId)
+        toyService.get(toyId)
             .then(toy => setToyToEdit(toy))
             .catch(err => {
                 console.log('Had issues in toy edit', err)
@@ -38,7 +38,7 @@ export function ToyEdit() {
 
     function onSaveToy(ev) {
         ev.preventDefault()
-        if (!toyToEdit.price) toyToEdit.price = 1000
+        if (!toyToEdit.price) toyToEdit.price
         saveToy(toyToEdit)
             .then(() => {
                 showSuccessMsg('Toy Saved!')
@@ -79,7 +79,7 @@ export function ToyEdit() {
                         <Link to="/toy">Cancel</Link>
                     </div>
                     <section>
-                        <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
+                        {/* <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1> */}
                     </section>
                 </form>
             </section>
