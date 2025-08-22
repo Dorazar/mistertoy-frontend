@@ -33,7 +33,8 @@ export function ToyIndex() {
     }
 
     function onRemovetoy(toyId) {
-        removetoyOptimistic(toyId)
+        console.log(toyId)
+        removeToy(toyId)
             .then(() => {
                 showSuccessMsg('Toy removed')
             })
@@ -57,7 +58,7 @@ export function ToyIndex() {
         const price = +prompt('New price?')
         const toyToSave = { ...toy, price }
 
-        savetoy(toyToSave)
+        saveToy(toyToSave)
             .then((savedtoy) => {
                 showSuccessMsg(`Toy updated to price: $${savedtoy.price}`)
             })
