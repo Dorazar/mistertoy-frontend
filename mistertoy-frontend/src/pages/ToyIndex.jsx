@@ -42,16 +42,16 @@ export function ToyIndex() {
             })
     }
 
-    function onAddtoy() {
-        const toyToSave = toyService.getRandomtoy()
-        savetoy(toyToSave)
-            .then((savedtoy) => {
-                showSuccessMsg(`Toy added (id: ${savedtoy._id})`)
-            })
-            .catch(err => {
-                showErrorMsg('Cannot add toy')
-            })
-    }
+    // function onAddtoy() {
+    //     const toyToSave = toyService.getRandomtoy()
+    //     savetoy(toyToSave)
+    //         .then((savedtoy) => {
+    //             showSuccessMsg(`Toy added (id: ${savedtoy._id})`)
+    //         })
+    //         .catch(err => {
+    //             showErrorMsg('Cannot add toy')
+    //         })
+    // }
     
     function onEdittoy(toy) {
         const price = +prompt('New price?')
@@ -77,7 +77,7 @@ export function ToyIndex() {
             <h3>toys App</h3>
             <main>
                 <Link to="/toy/edit">Add Toy</Link>
-                <button className='add-btn' onClick={onAddtoy}>Add Random Toy ⛐</button>
+                {/* <button className='add-btn' onClick={onAddtoy}>Add Random Toy ⛐</button> */}
                 <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
                 {!isLoading
                     ? <ToyList

@@ -1,76 +1,147 @@
-
-import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
-import { userService } from './user.service.js'
+import { storageService } from './async-storage.service.js'
 
-const STORAGE_KEY = 'toyDB'
+const TOY_KEY = 'toyDB'
+_createToys()
 
 export const toyService = {
     query,
-    getById,
-    save,
+    get,
     remove,
+    save,
     getEmptyToy,
-    getRandomToy,
-    getDefaultFilter
+    getDefaultFilter,
+    getFilterFromSearchParams,
+    getImportanceStats,
 }
+// For Debug (easy access from console):
+window.cs = toyService
 
 function query(filterBy = {}) {
-    return storageService.query(STORAGE_KEY)
+    return storageService.query(TOY_KEY)
         .then(toys => {
-            if (!filterBy.txt) filterBy.txt = ''
-            if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
-            if (!filterBy.minSpeed) filterBy.minSpeed = -Infinity
-            const regExp = new RegExp(filterBy.txt, 'i')
-            return toys.filter(toy =>
-                regExp.test(toy.vendor) &&
-                toy.price <= filterBy.maxPrice &&
-                toy.speed >= filterBy.minSpeed
-            )
+            if (filterBy.txt) {
+                const regExp = new RegExp(filterBy.txt, 'i')
+                toys = toys.filter(toy => regExp.test(toy.txt))
+            }
+
+            if (filterBy.importance) {
+                toys = toys.filter(toy => toy.importance >= filterBy.importance)
+            }
+
+            if(filterBy.isDone==='Done'){
+                toys = toys.filter(toy => toy.isDone===true)
+            }
+
+            if (filterBy.isDone==='Active') {
+                 toys = toys.filter(toy => toy.isDone===false)
+            }
+
+            return toys
         })
 }
 
-function getById(toyId) {
-    return storageService.get(STORAGE_KEY, toyId)
+function get(toyId) {
+    return storageService.get(TOY_KEY, toyId)
+        .then(toy => {
+            toy = _setNextPrevToyId(toy)
+            return toy
+        })
 }
 
 function remove(toyId) {
-    // return Promise.reject('Not now!')
-    return storageService.remove(STORAGE_KEY, toyId)
+    return storageService.remove(TOY_KEY, toyId)
 }
-
 
 function save(toy) {
     if (toy._id) {
-        return storageService.put(STORAGE_KEY, toy)
+        // TOY - updatable fields
+        toy.updatedAt = Date.now()
+        return storageService.put(TOY_KEY, toy)
     } else {
-        // when switching to backend - remove the next line
-        toy.owner = userService.getLoggedinUser()
-        return storageService.post(STORAGE_KEY, toy)
+        toy.createdAt = toy.updatedAt = Date.now()
+
+        return storageService.post(TOY_KEY, toy)
     }
 }
 
-function getEmptyToy() {
-    return {
-        vendor: '',
-        price: '',
-        speed: '',
-    }
-}
-
-function getRandomToy() {
-    return {
-        vendor: 'Susita-' + (Date.now() % 1000),
-        price: utilService.getRandomIntInclusive(1000, 9000),
-        speed: utilService.getRandomIntInclusive(90, 200),
-    }
+function getEmptyToy(txt = '', importance = 5) {
+    return { txt, importance, isDone: false }
 }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '', minSpeed: '' }
+    return { txt: '', importance: 0 }
 }
 
-// TEST DATA
-// storageService.post(STORAGE_KEY, {vendor: 'Subali Rahok 6', price: 980}).then(x => console.log(x))
+function getFilterFromSearchParams(searchParams) {
+    const defaultFilter = getDefaultFilter()
+    const filterBy = {}
+    for (const field in defaultFilter) {
+        filterBy[field] = searchParams.get(field) || ''
+    }
+    return filterBy
+}
 
+
+function getImportanceStats() {
+    return storageService.query(TOY_KEY)
+        .then(toys => {
+            const toyCountByImportanceMap = _getToyCountByImportanceMap(toys)
+            const data = Object.keys(toyCountByImportanceMap).map(speedName => ({ title: speedName, value: toyCountByImportanceMap[speedName] }))
+            return data
+        })
+
+}
+
+function _createToys() {
+    let toys = utilService.loadFromStorage(TOY_KEY)
+    if (!toys || !toys.length) {
+        toys = []
+        const txts = ['Learn React', 'Master CSS', 'Practice Redux']
+        for (let i = 0; i < 20; i++) {
+            const txt = txts[utilService.getRandomIntInclusive(0, txts.length - 1)]
+            toys.push(_createToy(txt + (i + 1), utilService.getRandomIntInclusive(1, 10)))
+        }
+        utilService.saveToStorage(TOY_KEY, toys)
+    }
+}
+
+function _createToy(txt, importance) {
+    const toy = getEmptyToy(txt, importance)
+    toy._id = utilService.makeId()
+    toy.createdAt = toy.updatedAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24)
+    return toy
+}
+
+function _setNextPrevToyId(toy) {
+    return storageService.query(TOY_KEY).then((toys) => {
+        const toyIdx = toys.findIndex((currToy) => currToy._id === toy._id)
+        const nextToy = toys[toyIdx + 1] ? toys[toyIdx + 1] : toys[0]
+        const prevToy = toys[toyIdx - 1] ? toys[toyIdx - 1] : toys[toys.length - 1]
+        toy.nextToyId = nextToy._id
+        toy.prevToyId = prevToy._id
+        return toy
+    })
+}
+
+function _getToyCountByImportanceMap(toys) {
+    const toyCountByImportanceMap = toys.reduce((map, toy) => {
+        if (toy.importance < 3) map.low++
+        else if (toy.importance < 7) map.normal++
+        else map.urgent++
+        return map
+    }, { low: 0, normal: 0, urgent: 0 })
+    return toyCountByImportanceMap
+}
+
+
+// Data Model:
+// const toy = {
+//     _id: "gZ6Nvy",
+//     txt: "Master Redux",
+//     importance: 9,
+//     isDone: false,
+//     createdAt: 1711472269690,
+//     updatedAt: 1711472269690
+// }
 
