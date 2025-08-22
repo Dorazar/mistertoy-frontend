@@ -32,8 +32,8 @@ export function ToyIndex() {
         setFilterBy(filterBy)
     }
 
-    function onRemovetoy(toyId) {
-        console.log(toyId)
+    function onRemoveToy(toyId) {
+        console.log()
         removeToy(toyId)
             .then(() => {
                 showSuccessMsg('Toy removed')
@@ -54,7 +54,7 @@ export function ToyIndex() {
     //         })
     // }
     
-    function onEdittoy(toy) {
+    function onEditToy(toy) {
         const price = +prompt('New price?')
         const toyToSave = { ...toy, price }
 
@@ -83,8 +83,8 @@ export function ToyIndex() {
                 {!isLoading
                     ? <ToyList
                         toys={toys}
-                        onRemovetoy={onRemovetoy}
-                        onEdittoy={onEdittoy}
+                        onRemoveToy={onRemoveToy}
+                        onEditToy={onEditToy}
                         addTotoyt={addTotoyt}
                     />
                     : <div>Loading...</div>
