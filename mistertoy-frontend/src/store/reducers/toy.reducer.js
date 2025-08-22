@@ -8,10 +8,10 @@ export const UPDATE_TOY = 'UPDATE_TOY'
 export const TOY_UNDO = 'TOY_UNDO'
 
 //* Shopping toyt
-export const TOGGLE_TOYT_IS_SHOWN = 'TOGGLE_TOYT_IS_SHOWN'
-export const ADD_TOY_TO_TOYT = 'ADD_TOY_TO_TOYT'
-export const REMOVE_TOY_FROM_TOYT = 'REMOVE_TOY_FROM_TOYT'
-export const CLEAR_TOYT = 'CLEAR_TOYT'
+export const TOGGLE_CART_IS_SHOWN = 'TOGGLE_CART_IS_SHOWN'
+export const ADD_TOY_TO_CART = 'ADD_TOY_TO_CART'
+export const REMOVE_TOY_FROM_CART = 'REMOVE_TOY_FROM_CART'
+export const CLEAR_CART= 'CLEAR_CART'
 
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
@@ -50,22 +50,22 @@ export function toyReducer(state = initialState, action = {}) {
             }
 
         //* Shopping toyt
-        case TOGGLE_TOYT_IS_SHOWN:
-            return { ...state, isToytShown: !state.isToytShown }
+        case TOGGLE_CART_IS_SHOWN:
+            return { ...state, isCarttShown: !state.isCartShown }
 
-        case ADD_TOY_TO_TOYT:
+        case ADD_TOY_TO_CART:
             return {
                 ...state,
-                shoppingToyt: [...state.shoppingToyt, action.toy]
+                shoppingCart: [...state.shoppingCart, action.toy]
             }
 
-        case REMOVE_TOY_FROM_TOYT:
-            const shoppingToyt = state.shoppingToyt.filter(toy => toy._id !== action.toyId)
-            return { ...state, shoppingToyt }
+        case REMOVE_TOY_FROM_CART:
+            const shoppingToyt = state.shoppingCart.filter(toy => toy._id !== action.toyId)
+            return { ...state, shoppingCart }
 
 
-        case CLEAR_TOYT:
-            return { ...state, shoppingToyt: [] }
+        case CLEAR_CART:
+            return { ...state, shoppingCart: [] }
 
         case SET_FILTER_BY:
             return {

@@ -27,8 +27,6 @@ export default function App() {
                     <AppHeader />
                     <main className='main-layout'>
                         <Routes>
-                       
-                  
                             <Route element={<ToyIndex />} path="/toy" />
                             <Route element={<ToyEdit />} path="/toy/edit" />
                             <Route element={<ToyEdit />} path="/toy/edit/:toyId" />
