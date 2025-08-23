@@ -23,16 +23,16 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         <section className="toy-filter full main-layout">
             <h2>Toys Filter</h2>
             <form >
-                <label htmlFor="vendor">Vendor:</label>
+                <label htmlFor="name"></label>
                 <input type="text"
-                    id="vendor"
-                    name="txt"
-                    placeholder="By vendor"
-                    value={filterByToEdit.txt}
+                    id="name"
+                    name="name"
+                    placeholder="Toy name"
+                    value={filterByToEdit.name}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="maxPrice">Max price:</label>
+                {/* <label htmlFor="maxPrice">Max price:</label>
                 <input type="number"
                     id="maxPrice"
                     name="maxPrice"
@@ -48,7 +48,15 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                     placeholder="By min speed"
                     value={filterByToEdit.minSpeed || ''}
                     onChange={handleChange}
-                />
+                /> */}
+
+                <label htmlFor="inStock">In stock</label>
+                <select onChange={handleChange} name="inStock" id="inStock">
+                    <option value="">All</option>
+                    <option value='true'>In stock</option>
+                    <option value='false'>Out of stock</option>
+                 
+                </select>
 
             </form>
 

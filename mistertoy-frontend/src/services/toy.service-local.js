@@ -19,21 +19,21 @@ window.cs = toyService
 
 function query(filterBy = {}) {
   return storageService.query(TOY_KEY).then((toys) => {
-    if (filterBy.txt) {
-      const regExp = new RegExp(filterBy.txt, 'i')
-      toys = toys.filter((toy) => regExp.test(toy.txt))
+    if (filterBy.name) {
+      const regExp = new RegExp(filterBy.name, 'i')
+      toys = toys.filter((toy) => regExp.test(toy.name))
     }
 
-    if (filterBy.importance) {
-      toys = toys.filter((toy) => toy.importance >= filterBy.importance)
+    // if (filterBy.importance) {
+    //   toys = toys.filter((toy) => toy.importance >= filterBy.importance)
+    // }
+
+    if (filterBy.inStock==='true') {
+      toys = toys.filter((toy) => toy.inStock === true)
     }
 
-    if (filterBy.isDone === 'Done') {
-      toys = toys.filter((toy) => toy.isDone === true)
-    }
-
-    if (filterBy.isDone === 'Active') {
-      toys = toys.filter((toy) => toy.isDone === false)
+    if (filterBy.inStock==='false') {
+      toys = toys.filter((toy) => toy.inStock === false)
     }
 
     return toys
