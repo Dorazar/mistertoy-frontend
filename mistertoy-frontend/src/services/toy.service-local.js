@@ -29,32 +29,31 @@ function query(filterBy = {}) {
     //   toys = toys.filter((toy) => toy.importance >= filterBy.importance)
     // }
 
-    if (filterBy.inStock==='true') {
+    if (filterBy.inStock === 'true') {
       toys = toys.filter((toy) => toy.inStock === true)
     }
 
-    if (filterBy.inStock==='false') {
+    if (filterBy.inStock === 'false') {
       toys = toys.filter((toy) => toy.inStock === false)
     }
 
     // sort
 
-    if (filterBy.sortDir==='Desc') {
-      sortDir = -1 
+    if (filterBy.sortDir === 'Desc') {
+      sortDir = -1
     }
 
-    if(filterBy.sortBy==='name') {
-     toys =  toys.sort((a, b) =>a.name.localeCompare(b.name) * sortDir)
+    if (filterBy.sortBy === 'name') {
+      toys = toys.sort((a, b) => a.name.localeCompare(b.name) * sortDir)
     }
 
-    if (filterBy.sortBy==='price') {
-      toys = toys.sort((a, b) => a.price - b.price  * sortDir)
+    if (filterBy.sortBy === 'price') {
+      toys = toys.sort((a, b) => (a.price - b.price) * sortDir)
     }
 
-      if (filterBy.sortBy==='createdAt') {
-      toys = toys.sort((a, b) => a.createdAt - b.createdAt  * sortDir)
+    if (filterBy.sortBy === 'createdAt') {
+      toys = toys.sort((a, b) => (a.createdAt - b.createdAt) * sortDir)
     }
-
 
     console.log(sortDir)
 
@@ -85,8 +84,6 @@ function save(toy) {
   }
 }
 
-
-
 function getFilterFromSearchParams(searchParams) {
   const defaultFilter = getDefaultFilter()
   const filterBy = {}
@@ -112,45 +109,45 @@ function _createToys() {
   if (!toys || !toys.length) {
     toys = []
     const toysNames = [
-  "Doll",
-  "Toy Car",
-  "Action Figure",
-  "Lego",
-  "Puzzle",
-  "Teddy Bear",
-  "Yo-Yo",
-  "Kite",
-  "Rubber Duck",
-  "Train Set"
-]
+      'Doll',
+      'Toy Car',
+      'Action Figure',
+      'Lego',
+      'Puzzle',
+      'Teddy Bear',
+      'Yo-Yo',
+      'Kite',
+      'Rubber Duck',
+      'Train Set',
+    ]
     var labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
     for (let i = 0; i < 10; i++) {
-        var toy = _createToy()
-        toy.name = toysNames[utilService.getRandomIntInclusive(0,toysNames.length-1)]
-         var emptyArr = []
-        for (let j = 0; j < 3; j++) {
-            if (emptyArr.includes(labels[utilService.getRandomIntInclusive(0,labels.length-1)])) {
-                continue
-            }
-            emptyArr.push(labels[utilService.getRandomIntInclusive(0,labels.length-1)])
+      var toy = _createToy()
+      toy.name = toysNames[utilService.getRandomIntInclusive(0, toysNames.length - 1)]
+      var emptyArr = []
+      for (let j = 0; j < 3; j++) {
+        if (emptyArr.includes(labels[utilService.getRandomIntInclusive(0, labels.length - 1)])) {
+          continue
         }
-        toy.labels = emptyArr
+        emptyArr.push(labels[utilService.getRandomIntInclusive(0, labels.length - 1)])
+      }
+      toy.labels = emptyArr
       toys.push(toy)
     }
     utilService.saveToStorage(TOY_KEY, toys)
   }
 }
 
-function getEmptyToy(name = '', imgUrl='',price=100,inStock=true) {
-  return { name, imgUrl, price,inStock }
+function getEmptyToy(name = '', imgUrl = '', price = 100, inStock = true) {
+  return { name, imgUrl, price, inStock }
 }
 
 function getDefaultFilter() {
   return { txt: '', importance: 0 }
 }
 
-function _createToy(name, imgUrl, price,inStock) {
-  const toy = getEmptyToy(name, imgUrl, price,inStock)
+function _createToy(name, imgUrl, price, inStock) {
+  const toy = getEmptyToy(name, imgUrl, price, inStock)
   toy._id = utilService.makeId()
   toy.createdAt = toy.updatedAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24)
   return toy
