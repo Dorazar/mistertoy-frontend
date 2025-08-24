@@ -18,6 +18,7 @@ export const toyService = {
 window.cs = toyService
 
 function query(filterBy = {}) {
+  var sortDir = 1
   return storageService.query(TOY_KEY).then((toys) => {
     if (filterBy.name) {
       const regExp = new RegExp(filterBy.name, 'i')
@@ -35,6 +36,27 @@ function query(filterBy = {}) {
     if (filterBy.inStock==='false') {
       toys = toys.filter((toy) => toy.inStock === false)
     }
+
+    // sort
+
+    if (filterBy.sortDir==='Desc') {
+      sortDir = -1 
+    }
+
+    if(filterBy.sortBy==='name') {
+     toys =  toys.sort((a, b) =>a.name.localeCompare(b.name) * sortDir)
+    }
+
+    if (filterBy.sortBy==='price') {
+      toys = toys.sort((a, b) => a.price - b.price  * sortDir)
+    }
+
+      if (filterBy.sortBy==='createdAt') {
+      toys = toys.sort((a, b) => a.createdAt - b.createdAt  * sortDir)
+    }
+
+
+    console.log(sortDir)
 
     return toys
   })

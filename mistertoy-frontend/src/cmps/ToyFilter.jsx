@@ -1,65 +1,60 @@
 // const { useState, useEffect, useRef } = React
 
-import { useEffect, useRef, useState } from "react"
-import { utilService } from "../services/util.service.js"
-
+import { useEffect, useRef, useState } from 'react'
+import { utilService } from '../services/util.service.js'
 
 export function ToyFilter({ filterBy, onSetFilter }) {
+  const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+  onSetFilter = useRef(utilService.debounce(onSetFilter, 300))
 
-    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
-    onSetFilter = useRef(utilService.debounce(onSetFilter, 300))
+  useEffect(() => {
+    onSetFilter.current(filterByToEdit)
+     console.log(filterByToEdit)
+  }, [filterByToEdit])
 
-    useEffect(() => {
-        onSetFilter.current(filterByToEdit)
-    }, [filterByToEdit])
+  function handleChange({ target }) {
+    let { value, name: field, type } = target
 
-    function handleChange({ target }) {
-        let { value, name: field, type } = target
-        value = type === 'number' ? +value : value
-        setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-    }
+    value = type === 'number' ? +value : value
 
-    return (
-        <section className="toy-filter full main-layout">
-            <h2>Toys Filter</h2>
-            <form >
-                <label htmlFor="name"></label>
-                <input type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Toy name"
-                    value={filterByToEdit.name}
-                    onChange={handleChange}
-                />
+    setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
+   
+  }
 
-                {/* <label htmlFor="maxPrice">Max price:</label>
-                <input type="number"
-                    id="maxPrice"
-                    name="maxPrice"
-                    placeholder="By max price"
-                    value={filterByToEdit.maxPrice || ''}
-                    onChange={handleChange}
-                />
+  return (
+    <section className="toy-filter full main-layout">
+      <h2>Toys Filter</h2>
+      <form>
+        <label htmlFor="name"></label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Toy name"
+          value={filterByToEdit.name}
+          onChange={handleChange}
+        />
 
-                <label htmlFor="minSpeed">Min Speed:</label>
-                <input type="number"
-                    id="minSpeed"
-                    name="minSpeed"
-                    placeholder="By min speed"
-                    value={filterByToEdit.minSpeed || ''}
-                    onChange={handleChange}
-                /> */}
+        <label htmlFor="inStock">In stock</label>
+        <select onChange={handleChange} name="inStock" id="inStock">
+          <option value="">All</option>
+          <option value="true">In stock</option>
+          <option value="false">Out of stock</option>
+        </select>
 
-                <label htmlFor="inStock">In stock</label>
-                <select onChange={handleChange} name="inStock" id="inStock">
-                    <option value="">All</option>
-                    <option value='true'>In stock</option>
-                    <option value='false'>Out of stock</option>
-                 
-                </select>
+        <label htmlFor="sortBy">Sort by</label>
+        <select onChange={handleChange} name="sortBy" id="sortBy">
+          <option value="name">Name</option>
+          <option value="price">Price</option>
+          <option value="createdAt">Created at</option>
+        </select>
 
-            </form>
-
-        </section>
-    )
+        <label htmlFor="sortDir"></label>
+        <select onChange={handleChange} name="sortDir" id="sortDir">
+          <option value="Asc">Asc</option>
+          <option value="Desc">Desc</option>
+        </select>
+      </form>
+    </section>
+  )
 }

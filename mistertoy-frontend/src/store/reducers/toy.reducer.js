@@ -21,7 +21,7 @@ const initialState = {
     isToytShown: false,
     shoppingToyt: [],
     isLoading: false,
-    // filterBy: toyService.getDefaultFilter(),
+   filterBy: {sortBy:'name'},
     lastToys: []
 }
 
