@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { toyService } from '../services/toy.service-local.js'
 import { Link, useParams } from 'react-router-dom'
 import { Chat } from '../cmps/Chat.jsx'
+import { PopUp } from '../cmps/PopUp.jsx'
 
 // const { useEffect, useState } = React
 // const { Link, useParams } = ReactRouterDOM
@@ -10,7 +11,7 @@ export function ToyDetails() {
   const [toy, setToy] = useState(null)
   const { toyId } = useParams()
 
-  const [showModal, setShowModal] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (toyId) loadToy()
@@ -26,34 +27,33 @@ export function ToyDetails() {
       })
   }
 
-  function onSetShowModal() {
-    setShowModal((prevStatus) => !prevStatus)
+  function onSetIsOpen() {
+    setIsOpen(true)
   }
 
-  function Popup({children}) {
-    return (
-      <section className="popup">
-        <header>header</header>
-        <main>{children}</main>
-        <footer>footer</footer>
-      </section>
-    )
+  function onCloseChat() {
+    setIsOpen(false)
   }
-  window.showModal = showModal
+
+
+
   if (!toy) return <div>Loading...</div>
   return (
     <section className="toy-details">
       <h1>Toy Name : {toy.name}</h1>
       <h5>Price: ${toy.price}</h5>
-      <button onClick={onSetShowModal}>chat</button>
-      {showModal ? <Popup>
-        <Chat></Chat>
-      </Popup> : ''}
+      <button onClick={onSetIsOpen}>chat</button>
+
+      {isOpen &&
+      <PopUp  isOpen={isOpen} onCloseChat={onCloseChat}>
+        <Chat/>
+      </PopUp>}
       <Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp;
       <Link to={`/toy`}>Back</Link>
       <p>
         <Link to="/toy/nJ5L4">Next Toy</Link>
       </p>
     </section>
+      
   )
 }

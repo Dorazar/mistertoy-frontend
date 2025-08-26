@@ -13,21 +13,28 @@ export function Chat() {
   function handleSubmit(ev) {
     ev.preventDefault()
     const newMessage = ev.target['message'].value
+    if (newMessage.length===0) return
     setMessages((prevMessages) => [...prevMessages, newMessage])
-     onChatMessage()
+    ev.target['message'].value=''
+    onChatMessage()
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="message" id="message" placeholder="Type a message..." />
-        <button type="submit">Send</button>
-      </form>
-      <ul>
+    
+    <section >
+      
+      <ul >
         {messages.map((message, id) => (
           <li key={id}>{message}</li>
         ))}
       </ul>
-    </>
+        <form onSubmit={handleSubmit}>
+        <input type="text" name="message" id="message" placeholder="Type a message..." />
+        <button type="submit">Send</button>
+      </form>
+   
+    </section>
+
+    
   )
 }

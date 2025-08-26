@@ -1,0 +1,7 @@
+.chat-container{
+    width: 500px;
+    height: 500px;
+    position:fixed;
+    left: 50%;
+    background-color: rgb(198, 198, 250);
+}

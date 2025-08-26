@@ -21,7 +21,7 @@
 @import 'cmps/CarEdit.css';
 
 @import 'cmps/ShoppingCart.css';
-
+@import 'cmps/Chat.css';
 
 .app {
     display: flex;
