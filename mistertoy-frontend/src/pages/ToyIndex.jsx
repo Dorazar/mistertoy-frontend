@@ -10,7 +10,6 @@ import { ToyFilter } from '../cmps/ToyFilter.jsx'
 import { ToyList } from '../cmps/ToyList.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy ,setLabels} from '../store/actions/toy.actions.js'
-import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy ,setLabels} from '../store/actions/toy.actions.js'
 
 
 export function ToyIndex() {
