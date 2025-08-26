@@ -1,4 +1,4 @@
-// import { toyService } from "../../services/toy.service.js"
+ import { labels, toyService } from "../../services/toy.service-local.js"
 
 //* Toys
 export const SET_TOYS = 'SET_TOYS'
@@ -11,81 +11,82 @@ export const TOY_UNDO = 'TOY_UNDO'
 export const TOGGLE_CART_IS_SHOWN = 'TOGGLE_CART_IS_SHOWN'
 export const ADD_TOY_TO_CART = 'ADD_TOY_TO_CART'
 export const REMOVE_TOY_FROM_CART = 'REMOVE_TOY_FROM_CART'
-export const CLEAR_CART= 'CLEAR_CART'
+export const CLEAR_CART = 'CLEAR_CART'
 
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
 
+export const SET_LABELS = 'SET_LABELS'
+
 const initialState = {
-    toys: [],
-    isToytShown: false,
-    shoppingToyt: [],
-    isLoading: false,
-   filterBy: {sortBy:'name'},
-    lastToys: []
+  toys: [],
+  isToytShown: false,
+  shoppingToyt: [],
+  isLoading: false,
+  filterBy: toyService.getDefaultFilter(),
+  lastToys: [],
+  labels: labels,
 }
 
 export function toyReducer(state = initialState, action = {}) {
-    switch (action.type) {
-        //* Toys
-        case SET_TOYS:
-            return { ...state, toys: action.toys }
-        case REMOVE_TOY:
-            const lastToys = [...state.toys]
-            return {
-                ...state,
-                toys: state.toys.filter(toy => toy._id !== action.toyId),
-                lastToys
-            }
-        case ADD_TOY:
+  switch (action.type) {
+    //* Toys
+    case SET_TOYS:
+      return { ...state, toys: action.toys }
+    case REMOVE_TOY:
+      const lastToys = [...state.toys]
+      return {
+        ...state,
+        toys: state.toys.filter((toy) => toy._id !== action.toyId),
+        lastToys,
+      }
+    case ADD_TOY:
+      return {
+        ...state,
+        toys: [...state.toys, action.toy],
+      }
+    case UPDATE_TOY:
+      return {
+        ...state,
+        toys: state.toys.map((toy) => (toy._id === action.toy._id ? action.toy : toy)),
+      }
 
-            return {
-                ...state,
-                toys: [...state.toys, action.toy]
-            }
-        case UPDATE_TOY:
-            return {
-                ...state,
-                toys: state.toys.map(toy => toy._id === action.toy._id ? action.toy : toy)
-            }
+    //* Shopping toyt
+    case TOGGLE_CART_IS_SHOWN:
+      return { ...state, isCarttShown: !state.isCartShown }
 
-        //* Shopping toyt
-        case TOGGLE_CART_IS_SHOWN:
-            return { ...state, isCarttShown: !state.isCartShown }
+    case ADD_TOY_TO_CART:
+      return {
+        ...state,
+        shoppingCart: [...state.shoppingCart, action.toy],
+      }
 
-        case ADD_TOY_TO_CART:
-            return {
-                ...state,
-                shoppingCart: [...state.shoppingCart, action.toy]
-            }
+    case REMOVE_TOY_FROM_CART:
+      const shoppingToyt = state.shoppingCart.filter((toy) => toy._id !== action.toyId)
+      return { ...state, shoppingCart }
 
-        case REMOVE_TOY_FROM_CART:
-            const shoppingToyt = state.shoppingCart.filter(toy => toy._id !== action.toyId)
-            return { ...state, shoppingCart }
+    case CLEAR_CART:
+      return { ...state, shoppingCart: [] }
 
+    case SET_FILTER_BY:
+      return {
+        ...state,
+        filterBy: { ...state.filterBy, ...action.filterBy },
+      }
 
-        case CLEAR_CART:
-            return { ...state, shoppingCart: [] }
-
-        case SET_FILTER_BY:
-            return {
-                ...state,
-                filterBy: { ...state.filterBy, ...action.filterBy }
-            }
-
-        case SET_IS_LOADING:
-            return {
-                ...state,
-                isLoading: action.isLoading
-            }
-        case TOY_UNDO:
-            return {
-                ...state,
-                toys: [...state.lastToys]
-            }
-
-
-        default:
-            return state
-    }
+    case SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.isLoading,
+      }
+    case TOY_UNDO:
+      return {
+        ...state,
+        toys: [...state.lastToys],
+      }
+      case SET_LABELS:
+        return {...state,labels:action.labels}
+    default:
+      return state
+  }
 }
