@@ -8,18 +8,17 @@ import { Link } from 'react-router-dom'
 
 import { ToyFilter } from '../cmps/ToyFilter.jsx'
 import { ToyList } from '../cmps/ToyList.jsx'
-import { toyService } from '../services/toy.service-local.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy } from '../store/actions/toy.actions.js'
-import { ADD_TOY_TO_CART } from '../store/reducers/toy.reducer.js'
+import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy ,setLabels} from '../store/actions/toy.actions.js'
 
 
 export function ToyIndex() {
 
-    const dispatch = useDispatch()
+    const labels = useSelector((storeState) => storeState.toyModule.labels)
     const toys = useSelector(storeState => storeState.toyModule.toys)
     const filterBy = useSelector(storeState => storeState.toyModule.filterBy)
     const isLoading = useSelector(storeState => storeState.toyModule.isLoading)
+
 
     useEffect(() => {
         loadToys()
@@ -77,7 +76,7 @@ export function ToyIndex() {
             <main>
                 <button><Link to="/toy/edit">Add Toy</Link></button>
                 {/* <button className='add-btn' onClick={onAddtoy}>Add Random Toy ⛐</button> */}
-                <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
+                <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} labels={labels}/>
                 {!isLoading
                     ? <ToyList
                         toys={toys}

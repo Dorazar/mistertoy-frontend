@@ -2,23 +2,29 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { utilService } from '../services/util.service.js'
+import { useSelector } from 'react-redux'
 
-export function ToyFilter({ filterBy, onSetFilter }) {
+export function ToyFilter({ filterBy, onSetFilter ,labels}) {
+ 
+
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
   onSetFilter = useRef(utilService.debounce(onSetFilter, 300))
 
   useEffect(() => {
     onSetFilter.current(filterByToEdit)
-     console.log(filterByToEdit)
+    console.log(filterByToEdit)
   }, [filterByToEdit])
 
   function handleChange({ target }) {
     let { value, name: field, type } = target
 
-    value = type === 'number' ? +value : value
-
+  
+     if (type === 'select-multiple') {
+            value = [...target.selectedOptions].map(option => option.value)
+        } else {
+            value = type === 'number' ? +value : value
+        }
     setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-   
   }
 
   return (
@@ -53,6 +59,14 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         <select onChange={handleChange} name="sortDir" id="sortDir">
           <option value="Asc">Asc</option>
           <option value="Desc">Desc</option>
+        </select>
+
+        <select name="labels" id="labels" multiple onChange={handleChange}>
+          {labels.map((label) => (
+            <option key={label} value={label}>
+              {label}
+            </option>
+          ))}
         </select>
       </form>
     </section>

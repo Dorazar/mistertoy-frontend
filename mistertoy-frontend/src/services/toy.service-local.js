@@ -1,6 +1,8 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
+export const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
+
 const TOY_KEY = 'toyDB'
 _createToys()
 
@@ -25,10 +27,6 @@ function query(filterBy = {}) {
       toys = toys.filter((toy) => regExp.test(toy.name))
     }
 
-    // if (filterBy.importance) {
-    //   toys = toys.filter((toy) => toy.importance >= filterBy.importance)
-    // }
-
     if (filterBy.inStock === 'true') {
       toys = toys.filter((toy) => toy.inStock === true)
     }
@@ -36,6 +34,20 @@ function query(filterBy = {}) {
     if (filterBy.inStock === 'false') {
       toys = toys.filter((toy) => toy.inStock === false)
     }
+
+    if (filterBy.labels) {
+      const filteredToys = []
+      toys.map((toy) => {
+        filterBy.labels.map((label) => {
+          if (toy.labels.includes(label)) {
+            filteredToys.push(toy)
+          }
+        })
+      })
+      toys = filteredToys
+    }
+
+
 
     // sort
 
@@ -120,7 +132,7 @@ function _createToys() {
       'Rubber Duck',
       'Train Set',
     ]
-    var labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle', 'Outdoor', 'Battery Powered']
+
     for (let i = 0; i < 10; i++) {
       var toy = _createToy()
       toy.name = toysNames[utilService.getRandomIntInclusive(0, toysNames.length - 1)]
@@ -143,7 +155,7 @@ function getEmptyToy(name = '', imgUrl = '', price = 100, inStock = true) {
 }
 
 function getDefaultFilter() {
-  return { txt: '', importance: 0 }
+  return { sortBy: 'name' }
 }
 
 function _createToy(name, imgUrl, price, inStock) {
