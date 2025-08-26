@@ -1,7 +1,72 @@
-.chat-container{
-    width: 500px;
+.popup-container{
+    width: 400px;
     height: 500px;
     position:fixed;
-    left: 50%;
-    background-color: rgb(198, 198, 250);
+    left: calc(50% - 200px);
+   
+    display: grid;
+    grid-template-rows: 1fr 400px 1fr;
+    border:  1px solid;
+    border-radius: 10px;
+    background-color: lightgrey;
+}
+
+.popup-container > header,.popup-container > footer{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 0;
+}
+
+.chat-container {
+    display: grid;
+    background-color: rgb(234, 236, 236);
+    height: 100%;
+    grid-template-rows: 1fr 50px;
+    
+}
+
+.chat-bottom {
+    height: 100%;
+    display: flex;
+}
+
+.chat-input{
+    font-size: larger;
+     font-family: 'Edu VIC WA NT Beginner', cursive;
+    
+    width: 100%;
+}
+
+
+.chat-messages{
+    display: flex;
+    padding: 10px 10px ;
+    flex-direction: column;
+}
+
+.chat-message{
+       
+list-style: none;
+        
+}
+
+.chat-message.user {
+  align-self: flex-start;
+}
+
+.chat-message.system {
+  align-self: flex-end;
+}
+
+.chat-message.user h2 {
+  background-color: #d1e7ff;
+    display: inline;
+  text-align: left;
+}
+
+.chat-message.system h2 {
+  background-color: #e2ffe1;
+    display: inline-block;
+  text-align: right;
 }
