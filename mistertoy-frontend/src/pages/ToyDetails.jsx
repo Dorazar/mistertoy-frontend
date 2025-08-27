@@ -42,7 +42,7 @@ export function ToyDetails() {
     <section className="toy-details">
       <h1>Toy Name : {toy.name}</h1>
       <h5>Price: ${toy.price}</h5>
-      <button onClick={onSetIsOpen}>chat</button>
+      <button className='chat-btn' onClick={onSetIsOpen}>chat</button>
 
       {isOpen &&
       <PopUp  isOpen={isOpen} onCloseChat={onCloseChat}>

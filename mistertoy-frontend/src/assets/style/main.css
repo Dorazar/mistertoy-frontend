@@ -22,6 +22,7 @@
 
 @import 'cmps/ShoppingCart.css';
 @import 'cmps/Chat.css';
+@import 'cmps/ToyDetails.css';
 
 .app {
     display: flex;
