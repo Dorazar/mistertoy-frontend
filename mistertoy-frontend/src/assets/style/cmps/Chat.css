@@ -3,7 +3,7 @@
     height: 500px;
     position:fixed;
     left: calc(50% - 200px);
-   
+    
     display: grid;
     grid-template-rows: 1fr 400px 1fr;
     border:  1px solid;
@@ -28,13 +28,17 @@
 
 .chat-bottom {
     height: 100%;
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    background-color: gold;
+    grid-template-columns: 1fr 100px;
 }
 
 .chat-input{
-    font-size: larger;
-     font-family: 'Edu VIC WA NT Beginner', cursive;
     
+    font-size: larger;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    padding:5px;
     width: 100%;
 }
 
@@ -46,9 +50,7 @@
 }
 
 .chat-message{
-       
 list-style: none;
-        
 }
 
 .chat-message.user {
