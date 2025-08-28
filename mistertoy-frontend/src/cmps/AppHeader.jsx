@@ -40,6 +40,7 @@ export function AppHeader() {
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/toy" >Toys</NavLink>
+                    <NavLink to="/toy/dashboard" >Dashboard</NavLink>
                     {/* <a onClick={onToggleToyt} href="#">🛒 Toyt</a> */}
                 </nav>
             </section>
