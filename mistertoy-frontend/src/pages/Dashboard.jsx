@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { DoughnutChart } from '../cmps/DoughnutChart'
-import { labels, toyService } from '../services/toy.service-local'
+import { toyService } from '../services/toy.service-local'
 import { PieChart } from '../cmps/PieChart'
+import { LineChart } from '../cmps/LineChart'
 
 export function Dashboard() {
   const [priceByLabel, SetPriceByLabel] = useState({ labels: [], prices: [] })
@@ -80,6 +81,10 @@ export function Dashboard() {
       <div style={{ width: '500px', height: '500px' }}>
          <h1>Inventory Per Label</h1>
         <PieChart dataToShow={inventoryByLabel}></PieChart>
+      </div>
+        <div style={{ width: '500px', height: '500px' }}>
+         <h1>Line Chart</h1>
+        <LineChart></LineChart>
       </div>
     </>
     </section>
