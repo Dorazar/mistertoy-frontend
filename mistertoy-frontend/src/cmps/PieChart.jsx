@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut  } from 'react-chartjs-2';
+import { Pie  } from 'react-chartjs-2';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -18,14 +18,14 @@ function getRandomColors(count) {
 }
 
 
-export function DoughnutChart({dataToShow}) {
-
+export function PieChart({dataToShow}) {
+console.log(dataToShow)
   const data = {
   labels: dataToShow.labels,
   datasets: [
     {
-      label: 'Price',
-      data: dataToShow.prices,
+      label: '% Inventory',
+      data: dataToShow.perc,
       backgroundColor: getRandomColors(dataToShow.labels.length),
       borderColor: [
         'rgba(145, 143, 144, 1)'
@@ -34,5 +34,5 @@ export function DoughnutChart({dataToShow}) {
     },
   ],
 }
-  return <Doughnut data={data} />;
+  return <Pie data={data} />;
 }
