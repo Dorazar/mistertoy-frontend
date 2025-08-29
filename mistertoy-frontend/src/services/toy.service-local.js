@@ -67,7 +67,7 @@ function query(filterBy = {}) {
       toys = toys.sort((a, b) => (a.createdAt - b.createdAt) * sortDir)
     }
 
-    console.log(sortDir)
+    // console.log(sortDir)
 
     return toys
   })
