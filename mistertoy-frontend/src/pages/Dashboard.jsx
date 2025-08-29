@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react'
-import { PieChart } from '../cmps/PieChart'
+import { DoughnutChart  } from '../cmps/DoughnutChart'
 import { toyService } from '../services/toy.service-local'
 
 export function Dashboard() {
-  const [dataToShow, setDataToShow] = useState({ labels: [], data: [] })
-
+  const [pricesPerLabel, setPricesPerLabel] = useState({ labels: [], data: [] })
   useEffect(() => {
     getData()
   }, [])
-
   const labelsToShow = {}
-
   function getData() {
    toyService
       .query()
@@ -26,21 +23,20 @@ export function Dashboard() {
         )
       )
       .then(() => {
-        
         const labels = Object.keys(labelsToShow)
         const data = Object.values(labelsToShow)
-
-        setDataToShow({labels,data})
+        setPricesPerLabel({labels,data})
       })
       
   }
-
-  window.dataToShow=dataToShow
-
+  
   return (
+    
     <>
-    <div style={{ width: '300px', height: '300px' }}></div>
-      <PieChart dataToShow={dataToShow} />
+    <div style={{ width: '500px', height: '500px' }}>
+        <h1>Prices Per Label</h1>
+      <DoughnutChart dataToShow={pricesPerLabel} />
+      </div>
     </>
   )
 }

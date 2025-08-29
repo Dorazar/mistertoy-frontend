@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut  } from 'react-chartjs-2';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -18,8 +18,8 @@ function getRandomColors(count) {
 }
 
 
-export function PieChart({dataToShow}) {
-   
+export function DoughnutChart({dataToShow}) {
+
   const data = {
   labels: dataToShow.labels,
   datasets: [
@@ -34,5 +34,5 @@ export function PieChart({dataToShow}) {
     },
   ],
 }
-  return <Pie data={data} />;
+  return <Doughnut data={data} />;
 }
