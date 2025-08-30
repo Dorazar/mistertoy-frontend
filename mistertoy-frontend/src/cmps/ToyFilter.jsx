@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { utilService } from '../services/util.service.js'
 import { useSelector } from 'react-redux'
+import SelectComponent from './SelectComponent.jsx'
+
+
+
+
 
 export function ToyFilter({ filterBy, onSetFilter ,labels}) {
  
@@ -12,20 +17,24 @@ export function ToyFilter({ filterBy, onSetFilter ,labels}) {
 
   useEffect(() => {
     onSetFilter.current(filterByToEdit)
-    console.log(filterByToEdit)
+    console.log(filterByToEdit.labels)
   }, [filterByToEdit])
 
   function handleChange({ target }) {
+   
     let { value, name: field, type } = target
-
   
      if (type === 'select-multiple') {
             value = [...target.selectedOptions].map(option => option.value)
         } else {
             value = type === 'number' ? +value : value
         }
-    setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
+    setFilterByToEdit((prevFilter) => ({ ...prevFilter,[field]: value }))
+    
   }
+
+window.filterByToEdit=filterByToEdit
+
 
   return (
     <section className="toy-filter full main-layout">
@@ -33,6 +42,7 @@ export function ToyFilter({ filterBy, onSetFilter ,labels}) {
       <form>
         <label htmlFor="name"></label>
         <input
+
           type="text"
           id="name"
           name="name"
@@ -61,13 +71,21 @@ export function ToyFilter({ filterBy, onSetFilter ,labels}) {
           <option value="Desc">Desc</option>
         </select>
 
-        <select name="labels" id="labels" multiple onChange={handleChange}>
+
+      <SelectComponent 
+      labels={labels} 
+      filterByToEdit={filterByToEdit} 
+      setFilterByToEdit={setFilterByToEdit}
+      handleChange={handleChange}
+      />
+
+        {/* <select name="labels" id="labels" multiple onChange={handleChange}>
           {labels.map((label) => (
             <option key={label} value={label}>
               {label}
             </option>
           ))}
-        </select>
+        </select> */}
       </form>
     </section>
   )

@@ -35,7 +35,7 @@ function query(filterBy = {}) {
       toys = toys.filter((toy) => toy.inStock === false)
     }
 
-    if (filterBy.labels) {
+    if (filterBy.labels && filterBy.labels.length>0) {
       const filteredToys = []
       toys.map((toy) => {
         filterBy.labels.map((label) => {
