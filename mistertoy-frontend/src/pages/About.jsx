@@ -38,9 +38,6 @@ export function About() {
     setLocation(coords)
   }
 
-  function findLocContent() {
-    const content = positions.find()
-  }
 
   function onSetOpenWindow() {
     setOpenWindow((prevState) => !prevState)
@@ -56,7 +53,13 @@ export function About() {
           <AdvancedMarker onClick={onSetOpenWindow} position={location} />
         </Map>
       </APIProvider>
+        
 
+        <section>
+         <h1>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus accusantium earum corporis tenetur obcaecati! Id ad debitis nulla magnam, tempora earum eius unde, nostrum ipsa ut, non voluptates delectus architecto?</h1>
+          <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum impedit modi consequuntur laborum nam sequi ratione nesciunt vel cupiditate at libero cum expedita molestiae, veniam sapiente qui sint illum ex.</h1>
+          <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit eius totam eaque voluptatum consequuntur. Voluptatibus ad nostrum ab inventore voluptate repellendus! Impedit, dicta molestiae aperiam odit ratione nesciunt cupiditate vitae.</h1>
+        </section>
       <button onClick={handleChange} value={JSON.stringify({ lat: 32.0906376, lng: 34.876529 })}>
         Petah-tiqwa
       </button>
