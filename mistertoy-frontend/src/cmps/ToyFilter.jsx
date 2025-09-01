@@ -13,7 +13,7 @@ export function ToyFilter({ filterBy, onSetFilter, labels }) {
 
   useEffect(() => {
     onSetFilter.current(filterByToEdit)
-    console.log(filterByToEdit.labels)
+    // console.log(filterByToEdit.labels)
   }, [filterByToEdit])
 
   function handleChange({ target }) {
@@ -44,10 +44,10 @@ export function ToyFilter({ filterBy, onSetFilter, labels }) {
         </Box>
 
         <div>
-          <Box sx={{ width: '100px' }}>
+          <Box sx={{ width: '200px' }}>
             <FormControl fullWidth>
               <InputLabel id="inStock">In stock</InputLabel>
-              <Select name="inStock" labelId="inStock" id="inStock" label="In stock" onChange={handleChange}>
+              <Select name="inStock" labelId="inStock" id="inStock" label="In stock" value={filterByToEdit.inStock} onChange={handleChange}>
                 <MenuItem value={''}>All</MenuItem>
                 <MenuItem value={'true'}>In stock</MenuItem>
                 <MenuItem value={'false'}>Out of stock</MenuItem>
@@ -58,10 +58,10 @@ export function ToyFilter({ filterBy, onSetFilter, labels }) {
 
    
 
-        <Box sx={{ width: '100px' }}>
+        <Box sx={{ width: '200px' }}>
           <FormControl fullWidth>
             <InputLabel id="sortBy">Sort</InputLabel>
-            <Select name="sortBy" labelId="sortBy" id="sortBy" label="In sortBy" onChange={handleChange}>
+            <Select name="sortBy" labelId="sortBy" id="sortBy" label="In sortBy" value={filterByToEdit.sortBy} onChange={handleChange}>
               <MenuItem value={'name'}>Name</MenuItem>
               <MenuItem value={'price'}>Price</MenuItem>
               <MenuItem value={'createdAt'}>Created at</MenuItem>

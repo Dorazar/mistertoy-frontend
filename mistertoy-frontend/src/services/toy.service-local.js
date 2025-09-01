@@ -39,7 +39,7 @@ function query(filterBy = {}) {
       const filteredToys = []
       toys.map((toy) => {
         filterBy.labels.map((label) => {
-          if (toy.labels.includes(label)) {
+          if (toy.labels.includes(label)&&!filteredToys.includes(toy)) {
             filteredToys.push(toy)
           }
         })
@@ -155,7 +155,7 @@ function getEmptyToy(name = '', imgUrl = '', price = 100, inStock = true) {
 }
 
 function getDefaultFilter() {
-  return { sortBy: 'name',labels:[],sortDir:1}
+  return { sortBy: '',labels:[],sortDir:'Asc',inStock:''}
 }
 
 function _createToy(name, imgUrl, price, inStock) {
