@@ -155,7 +155,7 @@ function getEmptyToy(name = '', imgUrl = '', price = 100, inStock = true) {
 }
 
 function getDefaultFilter() {
-  return { sortBy: 'name' }
+  return { sortBy: 'name',labels:[],sortDir:1}
 }
 
 function _createToy(name, imgUrl, price, inStock) {

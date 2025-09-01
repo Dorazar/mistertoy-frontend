@@ -20,26 +20,15 @@ const MenuProps = {
 }
 
 export default function SelectComponent({ labels,filterByToEdit,setFilterByToEdit}) {
-  const [currentLabels, setCurrentLabels] = useState(filterByToEdit.labels||[])
-
-
-
+  
  const handleChange = (event) => {
     
     const {target: {value,name}} = event;
-    setCurrentLabels(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    )
-    
-    setFilterByToEdit((prevfilter => ({...prevfilter,[name]: typeof value === 'string' ? value.split(',') : value})))
+    setFilterByToEdit((prevfilter => ({...prevfilter,[name]: value})))
   };
 
  
-
-
-
-  window.currentLabels = currentLabels
+// window.currentLabels = currentLabels
 //   window.filterByToEdit=filterByToEdit
 
   return (
@@ -51,7 +40,7 @@ export default function SelectComponent({ labels,filterByToEdit,setFilterByToEdi
           labelId="labels"
           id="labels"
           multiple
-          value={currentLabels}
+          value={filterByToEdit.labels}
           onChange={handleChange}
           input={<OutlinedInput label="labels" />}
           renderValue={(selected) => selected.join(', ')}
@@ -59,7 +48,7 @@ export default function SelectComponent({ labels,filterByToEdit,setFilterByToEdi
         >
           {labels.map((label) => (
             <MenuItem key={label} value={label}>
-              <Checkbox checked={currentLabels.includes(label)} />
+              <Checkbox checked={filterByToEdit.labels.includes(label)} />
               <ListItemText primary={label} />
             </MenuItem>
           ))}
