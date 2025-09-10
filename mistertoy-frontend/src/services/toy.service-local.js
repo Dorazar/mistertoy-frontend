@@ -19,14 +19,15 @@ export const toyService = {
 // For Debug (easy access from console):
 window.cs = toyService
 
-function query(filterBy = {}) {
+async function query(filterBy = {}) {
   var sortDir = 1
-  return storageService.query(TOY_KEY).then((toys) => {
-    if (filterBy.name) {
+  try {
+    let toys = await storageService.query(TOY_KEY)
+    console.log(toys)
+     if (filterBy.name) {
       const regExp = new RegExp(filterBy.name, 'i')
       toys = toys.filter((toy) => regExp.test(toy.name))
     }
-
     if (filterBy.inStock === 'true') {
       toys = toys.filter((toy) => toy.inStock === true)
     }
@@ -47,8 +48,6 @@ function query(filterBy = {}) {
       toys = filteredToys
     }
 
-
-
     // sort
 
     if (filterBy.sortDir === 'Desc') {
@@ -66,22 +65,35 @@ function query(filterBy = {}) {
     if (filterBy.sortBy === 'createdAt') {
       toys = toys.sort((a, b) => (a.createdAt - b.createdAt) * sortDir)
     }
-
-    // console.log(sortDir)
-
-    return toys
-  })
+   
+     return toys
+  } catch (err) {
+    console.log('error',err)
+  }
+  
 }
 
-function get(toyId) {
-  return storageService.get(TOY_KEY, toyId).then((toy) => {
-    toy = _setNextPrevToyId(toy)
-    return toy
-  })
+async function get(toyId) {
+  try {
+     let toy = await storageService.get(TOY_KEY, toyId)
+      toy = _setNextPrevToyId(toy)
+      return toy
+    
+  } catch (err) {
+    console.log('error,err')
+  }
+
 }
 
-function remove(toyId) {
-  return storageService.remove(TOY_KEY, toyId)
+async function remove(toyId) {
+
+  try {
+    const toyToRemove = await storageService.remove(TOY_KEY, toyId)
+    return toyToRemove
+  } catch (err) {
+    console.log('Error with remove toy',err)
+  }
+  
 }
 
 function save(toy) {
