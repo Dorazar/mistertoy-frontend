@@ -18,10 +18,13 @@ export async function loadToys() {
   const filterBy = store.getState().toyModule.filterBy
   store.dispatch({ type: SET_IS_LOADING, isLoading: true })
 
-  const toys = await toyService.query(filterBy)
-  console.log(toys)
+  
+ 
   try {
+    const toys = await toyService.query(filterBy)
+     console.log(toys)
     store.dispatch({ type: SET_TOYS, toys })
+
   } catch (err) {
     console.log('toy action -> Cannot load toys', err)
     throw err
@@ -42,44 +45,42 @@ export async function loadToys() {
   //     })
 }
 
-export function removeToy(toyId) {
-  return toyService.remove(toyId)
-    .then(() => {
-      store.dispatch({ type: REMOVE_TOY, toyId })
-    })
-    .catch((err) => {
-      console.log('toy action -> Cannot remove toy', err)
+export async function removeToy(toyId) {
+  try {
+    const toyIdToRemove = await toyService.remove(toyId)
+     store.dispatch({ type: REMOVE_TOY, toyIdToRemove })
+  } catch (err) {
+    console.log('toy action -> Cannot remove toy', err)
       throw err
-    })
+  }
+  
+
 }
 
-export function removeToyOptimistic(toyId) {
-  store.dispatch({ type: REMOVE_TOY, toyId })
-  return toyService
-    .remove(toyId)
-    .then(() => {
-      showSuccessMsg('Removed Toy!')
-    })
-    .catch((err) => {
-      store.dispatch({ type: TOY_UNDO })
-      console.log('toy action -> Cannot remove toy', err)
-      throw err
-    })
-}
+// export function removeToyOptimistic(toyId) {
+//   store.dispatch({ type: REMOVE_TOY, toyId })
+//   return toyService
+//     .remove(toyId)
+//     .then(() => {
+//       showSuccessMsg('Removed Toy!')
+//     })
+//     .catch((err) => {
+//       store.dispatch({ type: TOY_UNDO })
+//       console.log('toy action -> Cannot remove toy', err)
+//       throw err
+//     })
+// }
 
-export function saveToy(toy) {
+export async function saveToy(toy) {
   const type = toy._id ? UPDATE_TOY : ADD_TOY
-  return toyService
-    .save(toy)
-    .then((savedToy) => {
-      console.log('savedToy:', savedToy)
+  try {
+     const savedToy = await toyService.save(toy)
       store.dispatch({ type, toy: savedToy })
       return savedToy
-    })
-    .catch((err) => {
-      console.log('toy action -> Cannot save toy', err)
+  } catch (err) {
+     console.log('toy action -> Cannot save toy', err)
       throw err
-    })
+  }
 }
 
 export function setFilterBy(filterBy) {

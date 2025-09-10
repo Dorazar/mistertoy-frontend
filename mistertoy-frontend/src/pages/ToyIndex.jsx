@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { ToyFilter } from '../cmps/ToyFilter.jsx'
 import { ToyList } from '../cmps/ToyList.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { loadToys, removeToy, removeToyOptimistic, saveToy, setFilterBy} from '../store/actions/toy.actions.js'
+import { loadToys, removeToy, saveToy, setFilterBy} from '../store/actions/toy.actions.js'
 
 
 export function ToyIndex() {
@@ -26,10 +26,11 @@ export function ToyIndex() {
     useEffect(() => {
         loadToys()
             .catch(err => {
-                showErrorMsg('Cannot load toys!')
+                showErrorMsg('Cannot load toys!',err)
             })
     }, [filterBy])
-    
+
+
     function onSetFilter(filterBy) {
         setFilterBy(filterBy)
     }
@@ -37,10 +38,11 @@ export function ToyIndex() {
     function onRemoveToy(toyId) {
         removeToy(toyId)
             .then(() => {
+                loadToys()
                 showSuccessMsg('Toy removed')
             })
             .catch(err => {
-                showErrorMsg('Cannot remove toy')
+                showErrorMsg('Cannot remove toy',err)
             })
     }
 
