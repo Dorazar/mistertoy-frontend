@@ -1,4 +1,4 @@
-import { toyService } from '../../services/toy.service-local.js'
+import { toyService } from '../../services/toy.service.js'
 import { showSuccessMsg } from '../../services/event-bus.service.js'
 import {
   ADD_TOY,
@@ -20,7 +20,7 @@ export async function loadToys() {
 
   try {
     const toys = await toyService.query(filterBy)
-    console.log(toys)
+    // console.log(toys)
     store.dispatch({ type: SET_TOYS, toys })
 
   } catch (err) {

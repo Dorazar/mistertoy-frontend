@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { toyService } from '../services/toy.service-local.js'
+import { toyService } from '../services/toy.service.js'
 import { Link, useParams } from 'react-router-dom'
 import { Chat } from '../cmps/Chat.jsx'
 import { PopUp } from '../cmps/PopUp.jsx'
@@ -19,7 +19,7 @@ export function ToyDetails() {
 
   function loadToy() {
     toyService
-      .get(toyId)
+      .getById(toyId)
       .then((toy) => setToy(toy))
       .catch((err) => {
         console.log('Had issues in toy details', err)

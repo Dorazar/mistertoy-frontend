@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DoughnutChart } from '../cmps/DoughnutChart'
-import { toyService } from '../services/toy.service-local'
+import { toyService } from '../services/toy.service'
 import { PieChart } from '../cmps/PieChart'
 import { LineChart } from '../cmps/LineChart'
 
