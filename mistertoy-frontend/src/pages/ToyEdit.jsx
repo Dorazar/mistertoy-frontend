@@ -22,7 +22,7 @@ export function ToyEdit() {
     }, [])
 
     function loadToy() {
-        toyService.get(toyId)
+        toyService.getById(toyId)
             .then(toy => setToyToEdit(toy))
             .catch(err => {
                 console.log('Had issues in toy edit', err)
