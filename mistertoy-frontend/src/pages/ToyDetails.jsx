@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Chat } from '../cmps/Chat.jsx'
 import { PopUp } from '../cmps/PopUp.jsx'
 
-import { loadReviews,removeReview,addReview} from '../store/actions/review.actions.js'
+import { loadReviews, removeReview, addReview } from '../store/actions/review.actions.js'
 import { useSelector } from 'react-redux'
 
 // const { useEffect, useState } = React
@@ -16,20 +16,16 @@ export function ToyDetails() {
   const { toyId } = useParams()
   const [isOpen, setIsOpen] = useState(false)
 
-
   const reviews = useSelector((storeState) => storeState.reviewModule.reviews)
   // const user = useSelector((storeState)=>storeState.userModule.loggedInUser)
-  
+
   useEffect(() => {
     if (toyId) loadToy()
-     
-  
   }, [toyId])
 
-  useEffect(()=>{
- loadReviews() 
-  },[])
-
+  useEffect(() => {
+    loadReviews()
+  }, [])
 
   function loadToy() {
     toyService
@@ -41,7 +37,6 @@ export function ToyDetails() {
       })
   }
 
-  
   function onSetIsOpen() {
     setIsOpen(true)
   }
@@ -55,39 +50,29 @@ export function ToyDetails() {
     <section className="toy-details">
       <h1>Toy Name : {toy.name}</h1>
       <h5>Price: ${toy.price}</h5>
-    {toy.msgs && 
+      {toy.msgs && (
         <section>
-          Messages: 
+          Messages:
           {toy.msgs.map((msg) => {
-          return  <li key={msg.id}>{msg.txt}</li>
+            return <li key={msg.id}>{msg.txt}</li>
           })}
         </section>
-       }
-
- {reviews && 
+      )}
+       {reviews && (
         <section>
-          Reviews: 
-
-          {reviews.map((review) => {  
-          return  <li key={review._id}>{review.txt}
-            <button onClick={()=>removeReview(review._id)}>x</button>
-          </li>
-          })}
+          Reviews:
+          {reviews.filter((reviews)=> reviews.aboutToy._id===toyId)
+          .map((review) => 
+          {return (<li key={review._id}>
+                {review.txt}
+                <button onClick={() => removeReview(review._id)}>x</button>
+              </li>)})}
         </section>
-       }
-
-
-
-<button onClick={()=>addReview(
-  {txt:'Awesome!',
-    aboutToyId:toyId
-})
-
-}>Add Review</button>
+      )}
+      <button onClick={() => addReview({ txt: 'Awesome!', aboutToyId: toyId })}>Add Review</button>
       <button className="chat-btn" onClick={onSetIsOpen}>
         chat
       </button>
-             
       {isOpen && (
         <PopUp isOpen={isOpen} onCloseChat={onCloseChat}>
           <Chat />
